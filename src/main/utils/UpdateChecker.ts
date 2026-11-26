@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 import * as fs from 'fs';
 import * as path from 'path';
 import { app } from 'electron';
-import type { UpdateInfo } from '@shared/types';
+import type { UpdateInfo } from '../../../shared/types';
 import { Logger } from './Logger';
 
 // ============================================

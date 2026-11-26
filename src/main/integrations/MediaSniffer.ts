@@ -5,7 +5,7 @@
 
 import fetch from 'node-fetch';
 import * as cheerio from 'cheerio';
-import type { MediaResource, MediaSniffResult } from '@shared/types';
+import type { MediaResource, MediaSniffResult } from '../../shared/types';
 import { Logger } from '../utils/Logger';
 
 // ============================================

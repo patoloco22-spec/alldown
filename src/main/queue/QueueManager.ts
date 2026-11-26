@@ -15,11 +15,11 @@ import type {
   DownloadAddPayload,
   BatchDownloadPayload,
   QueueUpdateEvent,
-} from '@shared/types';
+} from '../../shared/types';
 import { DownloadEngine } from '../engine/DownloadEngine';
 import { SettingsManager } from '../settings/SettingsManager';
 import { Logger } from '../utils/Logger';
-import { DEFAULT_CATEGORIES } from '@shared/types';
+import { DEFAULT_CATEGORIES } from '../../shared/types';
 
 // ============================================
 // Queue Manager Class

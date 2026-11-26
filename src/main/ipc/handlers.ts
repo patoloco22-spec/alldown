@@ -14,7 +14,7 @@ import type {
   QueueUpdateEvent,
   CategoryUpdateEvent,
   MediaSniffResult,
-} from '@shared/types';
+} from '../../shared/types';
 import { IPC_CHANNELS } from './channels';
 import { DownloadEngine } from '../engine/DownloadEngine';
 import { QueueManager } from '../queue/QueueManager';

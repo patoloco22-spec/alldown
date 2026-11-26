@@ -21,7 +21,7 @@ import type {
   DownloadProgressEvent,
   DownloadStateChangeEvent,
   DownloadAddPayload,
-} from '@shared/types';
+} from '../../shared/types';
 import { Logger } from '../utils/Logger';
 import { SettingsManager } from '../settings/SettingsManager';
 

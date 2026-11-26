@@ -6,7 +6,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
-import type { AllSettings, ExtensionDownloadInfo, ExtensionMessage } from '@shared/types';
+import type { AllSettings, ExtensionDownloadInfo, ExtensionMessage } from '../../shared/types';
 import { Logger } from '../utils/Logger';
 
 // ============================================

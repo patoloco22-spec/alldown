@@ -15,7 +15,7 @@ import { UpdateChecker } from './utils/UpdateChecker';
 import { Logger } from './utils/Logger';
 import { IPC_CHANNELS } from './ipc/channels';
 import { setupIpcHandlers } from './ipc/handlers';
-import type { AllSettings, DownloadFile, DownloadCategory, DownloadAddPayload, BatchDownloadPayload } from '@shared/types';
+import type { AllSettings, DownloadFile, DownloadCategory, DownloadAddPayload, BatchDownloadPayload } from '../../shared/types';
 
 // ============================================
 // Global State

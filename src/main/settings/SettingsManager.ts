@@ -6,8 +6,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { app } from 'electron';
-import type { AllSettings, GeneralSettings, DownloadSettings, NetworkSettings, BrowserIntegrationSettings, AdvancedSettings, QueueSettings, DownloadCategory } from '@shared/types';
-import { DEFAULT_SETTINGS } from '@shared/types';
+import type { AllSettings, GeneralSettings, DownloadSettings, NetworkSettings, BrowserIntegrationSettings, AdvancedSettings, QueueSettings, DownloadCategory } from '../../shared/types';
+import { DEFAULT_SETTINGS } from '../../shared/types';
 import { Logger } from '../utils/Logger';
 
 // ============================================

@@ -4,7 +4,7 @@
  */
 
 import { clipboard } from 'electron';
-import type { AllSettings } from '@shared/types';
+import type { AllSettings } from '../../shared/types';
 import { Logger } from '../utils/Logger';
 
 // ============================================

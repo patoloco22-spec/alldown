@@ -17,7 +17,7 @@ import type {
   CategoryUpdateEvent,
   MediaSniffResult,
   UpdateInfo,
-} from '@shared/types';
+} from '../../shared/types';
 import { IPC_CHANNELS } from '../main/ipc/channels';
 
 // ============================================
