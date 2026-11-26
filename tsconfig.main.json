@@ -7,6 +7,6 @@
     "module": "CommonJS",
     "target": "ES2022"
   },
-  "include": ["src/main/**/*"],
+  "include": ["src/main/**/*", "src/shared/**/*"],
   "exclude": ["node_modules", "dist", "src/renderer"]
 }
