@@ -42,6 +42,10 @@ release/
 !.github/workflows/*.yml
 !.github/workflows/*.yaml
 
+# But DO include GitHub Actions workflows
+!.github/workflows/*.yml
+!.github/workflows/*.yaml
+
 # Extension
 extension/icons/
 extension/*.crx

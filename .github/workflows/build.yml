@@ -37,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Package Windows installer
-        run: npm run package -- --win --x64
+        run: npm run package
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
 
@@ -47,57 +47,6 @@ jobs:
           name: AllDown-Windows-x64
           path: dist/electron/*.exe
           retention-days: 30
-
-      - name: Upload to Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/electron/*.exe
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-windows-arm64:
-    name: Windows (ARM64)
-    runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build application
-        run: npm run build
-
-      - name: Package Windows ARM64
-        run: npm run package -- --win --arm64
-        env:
-          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-
-      - name: Upload Windows ARM64 artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: AllDown-Windows-ARM64
-          path: dist/electron/*.exe
-          retention-days: 30
-
-      - name: Upload to Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/electron/*.exe
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-macos:
     name: macOS (Universal)
@@ -118,12 +67,12 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Package macOS (DMG + ZIP)
-        run: npm run package -- --mac --universal
+      - name: Package macOS
+        run: npm run package
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
 
-      - name: Upload macOS artifacts
+      - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: AllDown-macOS
@@ -132,20 +81,8 @@ jobs:
             dist/electron/*.zip
           retention-days: 30
 
-      - name: Upload to Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/electron/*.dmg
-            dist/electron/*.zip
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   build-linux:
-    name: Linux (x64 + ARM64)
+    name: Linux (x64)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -160,11 +97,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
-            libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 \
-            libxfixes3 libxrandr2 libgbm1 libasound2 \
-            fuse libfuse2
+          sudo apt-get install -y libfuse2 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
 
       - name: Install dependencies
         run: npm ci
@@ -172,75 +105,16 @@ jobs:
       - name: Build application
         run: npm run build
 
-      - name: Package Linux (AppImage + deb + rpm)
-        run: npm run package -- --linux --x64 --arm64
+      - name: Package Linux
+        run: npm run package
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
 
-      - name: Upload Linux artifacts
+      - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: AllDown-Linux
           path: |
             dist/electron/*.AppImage
             dist/electron/*.deb
-            dist/electron/*.rpm
           retention-days: 30
-
-      - name: Upload to Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/electron/*.AppImage
-            dist/electron/*.deb
-            dist/electron/*.rpm
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Create combined release notes
-  release-notes:
-    name: Generate Release Notes
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: [build-windows, build-windows-arm64, build-macos, build-linux]
-    steps:
-      - name: Generate release notes
-        run: |
-          cat > release-notes.md << 'EOF'
-          # AllDown ${{ github.ref_name }}
-
-          ## Downloads
-
-          ### Windows
-          - [AllDown-Setup-${{ github.ref_name }}-x64.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-Setup-${{ github.ref_name }}-x64.exe) - x64 Installer
-          - [AllDown-Portable-${{ github.ref_name }}-x64.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-Portable-${{ github.ref_name }}-x64.exe) - x64 Portable
-          - [AllDown-Setup-${{ github.ref_name }}-arm64.exe](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-Setup-${{ github.ref_name }}-arm64.exe) - ARM64 Installer
-
-          ### macOS
-          - [AllDown-${{ github.ref_name }}-universal.dmg](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-universal.dmg) - Universal (Intel + Apple Silicon)
-          - [AllDown-${{ github.ref_name }}-universal.zip](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-universal.zip) - Universal ZIP
-
-          ### Linux
-          - [AllDown-${{ github.ref_name }}-x86_64.AppImage](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-x86_64.AppImage) - x64 AppImage
-          - [AllDown-${{ github.ref_name }}-arm64.AppImage](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-arm64.AppImage) - ARM64 AppImage
-          - [AllDown-${{ github.ref_name }}-x86_64.deb](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-x86_64.deb) - Debian/Ubuntu
-          - [AllDown-${{ github.ref_name }}-aarch64.rpm](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/AllDown-${{ github.ref_name }}-aarch64.rpm) - Fedora/RHEL
-
-          ## What's New
-          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
-
-          ## Verification
-          All binaries are signed and verified by GitHub Actions.
-          SHA256 checksums available in release assets.
-          EOF
-          cat release-notes.md
-
-      - name: Update Release with Notes
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: release-notes.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
